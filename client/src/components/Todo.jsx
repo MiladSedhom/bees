@@ -13,6 +13,7 @@ const Todo = ({
   id,
   draggedItemId,
   setDraggedItemId,
+  isRecentlyAdded,
 }) => {
   const blurElement = (e) => {
     if (e.keyCode === 13 && !e.shiftKey) {
@@ -48,6 +49,7 @@ const Todo = ({
       }}
     >
       <p
+        className={isRecentlyAdded && "recently-added"}
         contentEditable
         onBlur={(e) => {
           updateTodo(

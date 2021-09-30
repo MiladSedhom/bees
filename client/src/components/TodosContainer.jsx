@@ -25,6 +25,7 @@ const TodosContainer = ({
       ...todos,
       { name: "new task", category: category.toLowerCase() },
     ]);
+    //post request //to be cleanded
     const res = await axios({
       method: "post",
       url: "http://localhost:5000/api/v1/todos",
@@ -33,14 +34,20 @@ const TodosContainer = ({
         id: userData.id,
         todo: {
           category: category.toLowerCase(),
-          name: "new task",
+          name: `new task `,
         },
       },
     });
     const data = res.data;
-    data[data.length - 1].ref = lastTodo;
-    // lastTodo.current.foucs();
+    //adding a flag to the last created element
+    data[data.length - 1].isRecentlyAdded = true;
+    console.log(data[data.length - 1]);
     setTodos(data);
+    //grabing the last added element
+    const element = document.querySelector(".recently-added");
+    element.focus();
+    // select all the content in the element
+    document.execCommand("selectAll", false, null);
   };
   return (
     <div
@@ -88,7 +95,7 @@ const TodosContainer = ({
                   key={String(element._id)}
                   draggedItemId={draggedItemId}
                   setDraggedItemId={setDraggedItemId}
-                  ref={element.ref}
+                  isRecentlyAdded={element.isRecentlyAdded}
                 />
               )
             )
@@ -103,7 +110,7 @@ const TodosContainer = ({
                   key={String(element._id)}
                   draggedItemId={draggedItemId}
                   setDraggedItemId={setDraggedItemId}
-                  ref={element.ref && element.ref}
+                  isRecentlyAdded={element.isRecentlyAdded}
                 />
               )
             )}
