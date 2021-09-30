@@ -39,7 +39,7 @@ const Todo = ({
 
   return (
     <div
-      className="todo"
+      className={todo.isDone ? "todo done" : "todo"}
       draggable
       onDragStart={(e) => {
         console.log("drag start");
@@ -77,12 +77,35 @@ const Todo = ({
         )}
       </p>
       <div>
-        <button className="done-btn">
+        <motion.button
+          whileHover={{ scale: 1.2, color: "rgb(93, 255, 87)" }}
+          whileTap={{ scale: 0.9 }}
+          transition={{
+            duration: 0.2,
+          }}
+          onClick={async (e) => {
+            const updatedTodos = await updateTodo(
+              { isDone: !todo.isDone, id: id },
+              userData.id
+            );
+            setTodos(updatedTodos);
+          }}
+          className="done-btn"
+        >
           <FontAwesomeIcon icon={faCheck} />
-        </button>
-        <button onClick={deleteTodo} className="delete-btn">
+        </motion.button>
+
+        <motion.button
+          whileHover={{ scale: 1.2, color: "rgb(255, 87, 87)" }}
+          whileTap={{ scale: 0.9 }}
+          transition={{
+            duration: 0.2,
+          }}
+          onClick={deleteTodo}
+          className="delete-btn"
+        >
           <FontAwesomeIcon icon={faTrashAlt} />
-        </button>
+        </motion.button>
       </div>
     </div>
   );

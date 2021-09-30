@@ -68,7 +68,10 @@ const TodosContainer = ({
           }
         });
         setTodos(newTodos);
-        updateTodo({ category: category, id: draggedItemId }, userData.id);
+        updateTodo(
+          { category: category.toLowerCase(), id: draggedItemId },
+          userData.id
+        );
       }}
     >
       <div className="title-container">

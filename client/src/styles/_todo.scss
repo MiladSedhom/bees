@@ -1,13 +1,16 @@
 .todo {
   white-space: pre-line;
-  [contenteditable] {
-    outline: 0px solid transparent;
-  }
   color: $text-color;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 0 0 0.5rem 0;
+
+  [contenteditable] {
+    outline: 0px solid transparent;
+  }
+
   div {
     display: flex;
     justify-content: center;
@@ -29,10 +32,11 @@
     margin: 0 2px;
     border-radius: 50%;
   }
-  .delete-btn:hover {
-    color: rgb(255, 87, 87);
-  }
-  .done-btn:hover {
-    color: rgb(93, 255, 87);
+}
+
+.done {
+  p {
+    color: rgb(184, 184, 184);
+    text-decoration: line-through;
   }
 }

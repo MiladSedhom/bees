@@ -50,10 +50,11 @@ const updateTodo = async (obj, userId) => {
         id: obj.id,
         name: obj.name,
         isDone: obj.isDone,
-        category: obj.category.toLowerCase(),
+        category: obj.category,
       },
     },
   });
+  return res.data;
 };
 
 const updateNameInTodos = (id, name, todos, setTodos) => {

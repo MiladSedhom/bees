@@ -72,7 +72,7 @@ const updateTodo = async (req, res) => {
   
   `
   ); //remove
-  res.json({ index, newTodosArray, formData });
+  res.json(newTodosArray);
 };
 
 const deleteTodo = async (req, res) => {
