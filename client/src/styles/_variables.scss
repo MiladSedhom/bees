@@ -1,0 +1,33 @@
+// $blackish: #262626;
+// $grey: #343434;
+// $light-grey: #505050;
+
+$background-light: var(--background-light);
+$background: var(--background);
+$text-color: var(--text-color);
+$text-color-light: var(--text-color-light);
+
+:root {
+  --background-light: rgb(251, 245, 245, 0.2);
+  --background: rgb(251, 245, 245);
+  --text-color-light: rgb(0, 0, 0, 0.2);
+  --text-color: black;
+}
+.dark {
+  --background-light: rgb(41, 41, 41, 0, 2);
+  --background: #292929;
+  --text-color: rgb(251, 245, 245);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #292929;
+    --text-color: rgb(251, 245, 245);
+  }
+}
+
+@mixin dfcc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} ;

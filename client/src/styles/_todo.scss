@@ -1,0 +1,38 @@
+.todo {
+  white-space: pre-line;
+  [contenteditable] {
+    outline: 0px solid transparent;
+  }
+  color: $text-color;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    [contenteditable] {
+      outline: 0px solid transparent;
+    }
+  }
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: none;
+    background-color: rgb(42, 42, 42);
+    color: white;
+    // padding: 1rem;
+    margin: 0 2px;
+    border-radius: 50%;
+  }
+  .delete-btn:hover {
+    color: rgb(255, 87, 87);
+  }
+  .done-btn:hover {
+    color: rgb(93, 255, 87);
+  }
+}

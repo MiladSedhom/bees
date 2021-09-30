@@ -1,0 +1,30 @@
+.todos-container {
+  .title-container {
+    @include dfcc;
+  }
+
+  color: $text-color;
+  h1 {
+    font-size: 2rem;
+    padding: 0 0 0.5rem 0;
+    margin: 0 0.5rem;
+  }
+  hr {
+    width: 61.8%;
+  }
+  background-color: $background;
+  height: 85vh;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  border-radius: 1rem;
+  border: $text-color solid 2px;
+  padding: 1rem 0 0 0;
+  ul {
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    font-size: 1.5rem;
+    padding: 1rem;
+  }
+}

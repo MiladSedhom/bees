@@ -1,0 +1,71 @@
+.login-container {
+  color: $text-color;
+  background-color: $background;
+
+  @include dfcc;
+  width: 100vw;
+  height: 80vh;
+}
+
+.login-form {
+  height: 60vh;
+  width: 300px;
+  background-color: $background;
+  border: $text-color solid 2px;
+  border-radius: 1rem;
+  @include dfcc;
+  justify-content: space-around;
+  flex-flow: column;
+  .input-container {
+    width: 100%;
+    @include dfcc;
+    flex-flow: column;
+    input {
+      width: 80%;
+      background-color: $background;
+      padding: 0.5rem;
+      margin: 5px 0 0 0;
+      border: $text-color solid 1px;
+      color: $text-color;
+    }
+  }
+  .btn-container {
+    @include dfcc;
+    width: 100%;
+    flex-flow: column;
+    .link {
+      @include dfcc;
+      width: 100%;
+      flex-flow: column;
+    }
+    div {
+      @include dfcc;
+      margin: 5px 0 0 0;
+      width: 70%;
+    }
+    padding: 0.5rem;
+    button,
+    .link button {
+      background-color: $text-color;
+      border: none;
+      color: $background;
+      padding: 0.5rem;
+      // margin: 5px 0 0 0;
+      width: 100%;
+      border-radius: 10px;
+    }
+  }
+}
+
+.circle {
+  background-color: $text-color;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+  // opacity: 0;
+}

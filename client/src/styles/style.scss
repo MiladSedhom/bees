@@ -1,0 +1,22 @@
+@import "variables";
+@import "homepage";
+@import "header";
+@import "todos-container";
+@import "todo";
+@import "login-page";
+@import "signup-page";
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+
+body {
+  background-color: $background;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}

@@ -1,0 +1,14 @@
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+section {
+  min-width: 300px;
+  max-width: 80vw;
+  margin: 1rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
