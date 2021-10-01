@@ -40,6 +40,7 @@ const filterArrayCategory = (array, parentCategory) => {
 };
 
 const updateTodo = async (obj, userId) => {
+  console.log(obj);
   const res = await axios({
     method: "patch",
     url: "http://localhost:5000/api/v1/todos",
@@ -51,6 +52,7 @@ const updateTodo = async (obj, userId) => {
         name: obj.name,
         isDone: obj.isDone,
         category: obj.category,
+        subTo: obj.subTo,
       },
     },
   });
@@ -70,4 +72,35 @@ const updateNameInTodos = (id, name, todos, setTodos) => {
   );
 };
 
-export { loginHandler, filterArrayCategory, updateTodo, updateNameInTodos };
+const updateCategoryInUiOnDrop = (todos, setTodos, category, draggedItemId) => {
+  const newTodos = todos.map((element) => {
+    if (element._id === draggedItemId) {
+      element.category = category.toLowerCase();
+      return element;
+    } else {
+      return element;
+    }
+  });
+  setTodos(newTodos);
+};
+
+const updateSubToInUiOnDrop = (todos, setTodos, id, draggedItemId) => {
+  const newTodos = todos.map((element) => {
+    if (element._id === draggedItemId) {
+      element.subTo = id;
+      return element;
+    } else {
+      return element;
+    }
+  });
+  setTodos(newTodos);
+};
+
+export {
+  loginHandler,
+  filterArrayCategory,
+  updateTodo,
+  updateNameInTodos,
+  updateCategoryInUiOnDrop,
+  updateSubToInUiOnDrop,
+};

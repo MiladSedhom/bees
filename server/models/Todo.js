@@ -5,7 +5,7 @@ const todoSchema = new mongoose.Schema({
   isDone: { type: Boolean, default: false },
   dateCreated: { type: Date, required: true },
   category: { type: String, default: "daily", required: true },
-  subTo: { type: String, default: null },
+  subTo: { type: String },
 });
 
 const Todo = mongoose.model("Todo", todoSchema);

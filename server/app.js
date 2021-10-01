@@ -11,7 +11,13 @@ require("dotenv").config();
 app.use(cors());
 app.use(express.json());
 app.use((req, res, next) => {
-  console.log(req.body);
+  console.log(
+    "request:",
+    req.body,
+    `
+    ==================================================================================
+  `
+  );
   next();
 });
 app.use("/api/v1", usersRouter);

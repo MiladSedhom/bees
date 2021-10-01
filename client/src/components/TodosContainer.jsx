@@ -1,6 +1,10 @@
 import { React, useRef } from "react";
 import Todo from "./Todo";
-import { updateTodo } from "../utils/utils";
+import {
+  updateCategoryInUiOnDrop,
+  updateSubToInUiOnDrop,
+  updateTodo,
+} from "../utils/utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
@@ -56,20 +60,10 @@ const TodosContainer = ({
         e.preventDefault();
       }}
       onDrop={(e) => {
-        console.log("drop in", category.toLowerCase());
-        const newTodos = todos.map((element) => {
-          console.log(element._id === draggedItemId);
-          if (element._id === draggedItemId) {
-            element.category = category.toLowerCase();
-            console.log(element);
-            return element;
-          } else {
-            return element;
-          }
-        });
-        setTodos(newTodos);
+        updateCategoryInUiOnDrop(todos, setTodos, category, draggedItemId);
+        updateSubToInUiOnDrop(todos, setTodos, null, draggedItemId);
         updateTodo(
-          { category: category.toLowerCase(), id: draggedItemId },
+          { category: category.toLowerCase(), id: draggedItemId, subTo: null },
           userData.id
         );
       }}
@@ -103,19 +97,20 @@ const TodosContainer = ({
               )
             )
           : filterArrayCategory(todos, category.toLowerCase()).map(
-              (element) => (
-                <Todo
-                  todo={element}
-                  todos={todos}
-                  setTodos={setTodos}
-                  userData={userData}
-                  id={String(element._id)}
-                  key={String(element._id)}
-                  draggedItemId={draggedItemId}
-                  setDraggedItemId={setDraggedItemId}
-                  isRecentlyAdded={element.isRecentlyAdded}
-                />
-              )
+              (element) =>
+                !element.subTo && (
+                  <Todo
+                    todo={element}
+                    todos={todos}
+                    setTodos={setTodos}
+                    userData={userData}
+                    id={String(element._id)}
+                    key={String(element._id)}
+                    draggedItemId={draggedItemId}
+                    setDraggedItemId={setDraggedItemId}
+                    isRecentlyAdded={element.isRecentlyAdded}
+                  />
+                )
             )}
       </ul>
     </div>

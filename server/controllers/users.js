@@ -65,11 +65,26 @@ const updateTodo = async (req, res) => {
   if (formData.todo.category != undefined) {
     newTodosArray[positiveIndex].category = formData.todo.category;
   }
+  console.log(
+    "formData.subTo:",
+    formData.todo.subTo,
+    `
+    &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+    `
+  );
+  console.log("before:", newTodosArray[positiveIndex].subTo);
+  console.log(formData.todo.subTo != undefined);
+  if (formData.todo.subTo !== undefined) {
+    newTodosArray[positiveIndex].subTo = formData.todo.subTo;
+  }
+  console.log("after:", newTodosArray[positiveIndex].subTo);
+
   await User.updateOne({ _id: formData.id }, { todos: newTodosArray });
   console.log(
+    "updated todo:",
     newTodosArray[positiveIndex],
     `
-  
+    ************************************
   `
   ); //remove
   res.json(newTodosArray);
