@@ -61,19 +61,22 @@ const TodosContainer = ({
   const renderTodos = (array) => {
     return sortArrayIndexs(
       filterArrayCategory(array, category.toLowerCase())
-    ).map((element) => (
-      <Todo
-        todo={element}
-        todos={todos}
-        setTodos={setTodos}
-        userData={userData}
-        id={String(element._id)}
-        key={String(element._id)}
-        draggedItemId={draggedItemId}
-        setDraggedItemId={setDraggedItemId}
-        isRecentlyAdded={element.isRecentlyAdded}
-      />
-    ));
+    ).map(
+      (element) =>
+        !element.subTo && (
+          <Todo
+            todo={element}
+            todos={todos}
+            setTodos={setTodos}
+            userData={userData}
+            id={String(element._id)}
+            key={String(element._id)}
+            draggedItemId={draggedItemId}
+            setDraggedItemId={setDraggedItemId}
+            isRecentlyAdded={element.isRecentlyAdded}
+          />
+        )
+    );
   };
 
   return (
