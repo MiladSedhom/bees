@@ -6,6 +6,7 @@ const todoSchema = new mongoose.Schema({
   dateCreated: { type: Date, required: true },
   category: { type: String, default: "daily", required: true },
   subTo: { type: String },
+  index: { type: Number },
 });
 
 const Todo = mongoose.model("Todo", todoSchema);

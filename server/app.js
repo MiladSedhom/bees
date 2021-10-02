@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 app.use((req, res, next) => {
   console.log(
-    "request:",
+    `${req.method} request:`,
     req.body,
     `
     ==================================================================================

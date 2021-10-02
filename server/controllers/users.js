@@ -41,9 +41,6 @@ const createTodo = async (req, res) => {
   const TodosArray = [...user.todos, formData.todo];
   await User.updateOne({ _id: formData.id }, { todos: TodosArray });
   const newUser = await User.findOne({ _id: formData.id });
-  // console.log("todos array: ", TodosArray);
-  // console.log("==========================================");
-  // console.log(newUser.todos);
   res.json(newUser.todos);
 };
 
@@ -56,37 +53,22 @@ const updateTodo = async (req, res) => {
   });
   const positiveIndex = (newTodosArray.length + index) % newTodosArray.length;
   //for somereason things break when I pass in a negative index
-  if (formData.todo.name != undefined) {
+  if (formData.todo.name !== undefined) {
     newTodosArray[positiveIndex].name = formData.todo.name;
   }
-  if (formData.todo.isDone != undefined) {
+  if (formData.todo.isDone !== undefined) {
     newTodosArray[positiveIndex].isDone = formData.todo.isDone;
   }
-  if (formData.todo.category != undefined) {
+  if (formData.todo.category !== undefined) {
     newTodosArray[positiveIndex].category = formData.todo.category;
   }
-  console.log(
-    "formData.subTo:",
-    formData.todo.subTo,
-    `
-    &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-    `
-  );
-  console.log("before:", newTodosArray[positiveIndex].subTo);
-  console.log(formData.todo.subTo != undefined);
+  if (formData.todo.index !== undefined) {
+    newTodosArray[positiveIndex].index = formData.todo.index;
+  }
   if (formData.todo.subTo !== undefined) {
     newTodosArray[positiveIndex].subTo = formData.todo.subTo;
   }
-  console.log("after:", newTodosArray[positiveIndex].subTo);
-
   await User.updateOne({ _id: formData.id }, { todos: newTodosArray });
-  console.log(
-    "updated todo:",
-    newTodosArray[positiveIndex],
-    `
-    ************************************
-  `
-  ); //remove
   res.json(newTodosArray);
 };
 

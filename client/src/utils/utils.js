@@ -53,6 +53,7 @@ const updateTodo = async (obj, userId) => {
         isDone: obj.isDone,
         category: obj.category,
         subTo: obj.subTo,
+        index: obj.index,
       },
     },
   });
@@ -96,6 +97,12 @@ const updateSubToInUiOnDrop = (todos, setTodos, id, draggedItemId) => {
   setTodos(newTodos);
 };
 
+const sortArrayIndexs = (array) => {
+  return [...array].sort((a, b) => {
+    return a.index - b.index;
+  });
+};
+
 export {
   loginHandler,
   filterArrayCategory,
@@ -103,4 +110,5 @@ export {
   updateNameInTodos,
   updateCategoryInUiOnDrop,
   updateSubToInUiOnDrop,
+  sortArrayIndexs,
 };

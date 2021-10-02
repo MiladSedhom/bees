@@ -11,8 +11,7 @@ function App() {
   const [userData, setUserData] = useState({});
   const [guestTodos, setGuestTodos] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  //fetching wiht useEffect
-  // console.log(userData);
+
   return (
     <AnimatePresence exitBeforeEnter={true}>
       <Router>

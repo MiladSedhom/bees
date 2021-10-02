@@ -1,6 +1,7 @@
-import { React, useRef } from "react";
+import { React } from "react";
 import Todo from "./Todo";
 import {
+  sortArrayIndexs,
   updateCategoryInUiOnDrop,
   updateSubToInUiOnDrop,
   updateTodo,
@@ -13,6 +14,7 @@ import { filterArrayCategory as filterArrayCategory } from "../utils/utils";
 
 const TodosContainer = ({
   category,
+  prefix,
   guestTodos,
   todos,
   setTodos,
@@ -20,9 +22,10 @@ const TodosContainer = ({
   userData,
   draggedItemId,
   setDraggedItemId,
+  setCategories,
 }) => {
-  const lastTodo = useRef();
-
+  const counter =
+    todos && todos.filter((element) => element.category == category).length;
   const addTodo = async () => {
     //changeing the state so the new task get added immeditaly without waitng the response
     await setTodos([
@@ -39,6 +42,7 @@ const TodosContainer = ({
         todo: {
           category: category.toLowerCase(),
           name: `new task `,
+          index: Number(String(prefix) + String(counter)),
         },
       },
     });
@@ -53,6 +57,25 @@ const TodosContainer = ({
     // select all the content in the element
     document.execCommand("selectAll", false, null);
   };
+
+  const renderTodos = (array) => {
+    return sortArrayIndexs(
+      filterArrayCategory(array, category.toLowerCase())
+    ).map((element) => (
+      <Todo
+        todo={element}
+        todos={todos}
+        setTodos={setTodos}
+        userData={userData}
+        id={String(element._id)}
+        key={String(element._id)}
+        draggedItemId={draggedItemId}
+        setDraggedItemId={setDraggedItemId}
+        isRecentlyAdded={element.isRecentlyAdded}
+      />
+    ));
+  };
+
   return (
     <div
       className="todos-container"
@@ -69,7 +92,7 @@ const TodosContainer = ({
       }}
     >
       <div className="title-container">
-        <h1>{category}</h1>
+        <h1>{category.charAt(0).toUpperCase() + category.slice(1)}</h1>
         <motion.div
           onClick={addTodo}
           whileHover={{ scale: 1.2 }}
@@ -79,40 +102,7 @@ const TodosContainer = ({
         </motion.div>
       </div>
       <hr />
-      <ul>
-        {!isLoggedIn
-          ? filterArrayCategory(guestTodos, category.toLowerCase()).map(
-              (element) => (
-                <Todo
-                  todo={element}
-                  todos={todos}
-                  setTodos={setTodos}
-                  userData={userData}
-                  id={String(element._id)}
-                  key={String(element._id)}
-                  draggedItemId={draggedItemId}
-                  setDraggedItemId={setDraggedItemId}
-                  isRecentlyAdded={element.isRecentlyAdded}
-                />
-              )
-            )
-          : filterArrayCategory(todos, category.toLowerCase()).map(
-              (element) =>
-                !element.subTo && (
-                  <Todo
-                    todo={element}
-                    todos={todos}
-                    setTodos={setTodos}
-                    userData={userData}
-                    id={String(element._id)}
-                    key={String(element._id)}
-                    draggedItemId={draggedItemId}
-                    setDraggedItemId={setDraggedItemId}
-                    isRecentlyAdded={element.isRecentlyAdded}
-                  />
-                )
-            )}
-      </ul>
+      <ul>{isLoggedIn ? renderTodos(todos) : renderTodos(guestTodos)}</ul>
     </div>
   );
 };
