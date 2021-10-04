@@ -1,9 +1,10 @@
 import React from "react";
 import {
-  updateTodo,
+  updateTodos,
   updateNameInTodos,
   updateSubToInUiOnDrop,
   updateCategoryInUiOnDrop,
+  deleteTodos,
 } from "../utils/utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faCheck } from "@fortawesome/free-solid-svg-icons";
@@ -28,23 +29,37 @@ const Todo = ({
     }
   };
 
-  const deleteTodo = async () => {
-    setTodos(todos.filter((element) => element._id != id));
-    const res = await axios({
-      method: "delete",
-      url: "http://localhost:5000/api/v1/todos",
-      headers: {},
-      data: {
-        id: userData.id,
-        todo: {
-          id: id,
-        },
-      },
-    });
-  };
-
   return (
     <>
+      <motion.div
+        className="drop-area"
+        onDragOver={(e) => {
+          e.preventDefault();
+        }}
+        onDragEnter={(e) => {
+          e.target.classList.add("drag-over");
+        }}
+        onDragLeave={(e) => {
+          e.target.classList.remove("drag-over");
+        }}
+        onDrop={(e) => {
+          e.target.classList.remove("drag-over");
+          console.log(todos);
+          setTodos(
+            todos.map((element) => {
+              if (element.index > todo.index) {
+                element.index = element.index + 1;
+                return element;
+              } else if ((element.id = draggedItemId)) {
+                element.index = todo.index;
+                return element;
+              }
+              return element;
+            })
+          );
+          console.log(todos);
+        }}
+      ></motion.div>
       <div
         onDragOver={(e) => {
           e.preventDefault();
@@ -59,12 +74,14 @@ const Todo = ({
               draggedItemId
             );
             updateSubToInUiOnDrop(todos, setTodos, id, draggedItemId);
-            updateTodo(
-              {
-                category: todo.category.toLowerCase(),
-                id: draggedItemId,
-                subTo: id,
-              },
+            updateTodos(
+              [
+                {
+                  category: todo.category.toLowerCase(),
+                  id: draggedItemId,
+                  subTo: id,
+                },
+              ],
               userData.id
             );
           }
@@ -79,13 +96,15 @@ const Todo = ({
           className={isRecentlyAdded && "recently-added"}
           contentEditable
           onBlur={(e) => {
-            updateTodo(
-              {
-                name: e.target.innerHTML.replaceAll("&nbsp;", ` `),
-                isDone: todo.isDone,
-                category: todo.category,
-                id: id,
-              },
+            updateTodos(
+              [
+                {
+                  name: e.target.innerHTML.replaceAll("&nbsp;", ` `),
+                  isDone: todo.isDone,
+                  category: todo.category,
+                  id: id,
+                },
+              ],
               userData.id
             );
             updateNameInTodos(
@@ -111,7 +130,7 @@ const Todo = ({
               duration: 0.2,
             }}
             onClick={async (e) => {
-              const updatedTodos = await updateTodo(
+              const updatedTodos = await updateTodos(
                 { isDone: !todo.isDone, id: id },
                 userData.id
               );
@@ -128,7 +147,10 @@ const Todo = ({
             transition={{
               duration: 0.2,
             }}
-            onClick={deleteTodo}
+            onClick={(e) => {
+              setTodos(todos.filter((element) => element._id != id));
+              deleteTodos([{ id: id }], userData.id);
+            }}
             className="delete-btn"
           >
             <FontAwesomeIcon icon={faTrashAlt} />

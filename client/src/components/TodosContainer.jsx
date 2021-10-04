@@ -1,10 +1,11 @@
 import { React } from "react";
 import Todo from "./Todo";
 import {
+  changePrefix,
   sortArrayIndexs,
   updateCategoryInUiOnDrop,
   updateSubToInUiOnDrop,
-  updateTodo,
+  updateTodos,
 } from "../utils/utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -49,7 +50,6 @@ const TodosContainer = ({
     const data = res.data;
     //adding a flag to the last created element
     data[data.length - 1].isRecentlyAdded = true;
-    console.log(data[data.length - 1]);
     setTodos(data);
     //grabing the last added element
     const element = document.querySelector(".recently-added");
@@ -88,8 +88,14 @@ const TodosContainer = ({
       onDrop={(e) => {
         updateCategoryInUiOnDrop(todos, setTodos, category, draggedItemId);
         updateSubToInUiOnDrop(todos, setTodos, null, draggedItemId);
-        updateTodo(
-          { category: category.toLowerCase(), id: draggedItemId, subTo: null },
+        updateTodos(
+          [
+            {
+              category: category.toLowerCase(),
+              id: draggedItemId,
+              subTo: null,
+            },
+          ],
           userData.id
         );
       }}

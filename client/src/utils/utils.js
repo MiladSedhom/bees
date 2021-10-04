@@ -39,25 +39,42 @@ const filterArrayCategory = (array, parentCategory) => {
   return filterdArray;
 };
 
-const updateTodo = async (obj, userId) => {
-  console.log(obj);
+const updateTodos = async (array, userId) => {
   const res = await axios({
     method: "patch",
     url: "http://localhost:5000/api/v1/todos",
     headers: {},
     data: {
       id: userId,
-      todo: {
-        id: obj.id,
-        name: obj.name,
-        isDone: obj.isDone,
-        category: obj.category,
-        subTo: obj.subTo,
-        index: obj.index,
-      },
+      todos: array.map((element) => {
+        return {
+          _id: element.id,
+          name: element.name,
+          isDone: element.isDone,
+          category: element.category,
+          subTo: element.subTo,
+          index: element.index,
+        };
+      }),
     },
   });
   return res.data;
+};
+
+const deleteTodos = async (array, userId) => {
+  const res = await axios({
+    method: "delete",
+    url: "http://localhost:5000/api/v1/todos",
+    headers: {},
+    data: {
+      id: userId,
+      todos: array.map((element) => {
+        return {
+          _id: element.id,
+        };
+      }),
+    },
+  });
 };
 
 const updateNameInTodos = (id, name, todos, setTodos) => {
@@ -103,12 +120,18 @@ const sortArrayIndexs = (array) => {
   });
 };
 
+const changePrefix = (index, prefix) => {
+  return Number(String(prefix) + String(index).slice(1));
+};
+
 export {
   loginHandler,
   filterArrayCategory,
-  updateTodo,
+  updateTodos,
+  deleteTodos,
   updateNameInTodos,
   updateCategoryInUiOnDrop,
   updateSubToInUiOnDrop,
   sortArrayIndexs,
+  changePrefix,
 };

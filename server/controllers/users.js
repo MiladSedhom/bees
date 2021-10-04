@@ -36,7 +36,7 @@ const login = async (req, res) => {
 
 const createTodo = async (req, res) => {
   const formData = req.body;
-  formData.todo.dateCreated = new Date().toLocaleString();
+  formData.dateCreated = new Date().toLocaleString();
   const user = await User.findOne({ _id: formData.id });
   const TodosArray = [...user.todos, formData.todo];
   await User.updateOne({ _id: formData.id }, { todos: TodosArray });
@@ -44,47 +44,49 @@ const createTodo = async (req, res) => {
   res.json(newUser.todos);
 };
 
-const updateTodo = async (req, res) => {
-  const formData = req.body;
-  const user = await User.findOne({ _id: formData.id });
-  const newTodosArray = user.todos;
-  const index = user.todos.findIndex((element) => {
-    return element._id.toString() == formData.todo.id;
+const updateTodos = async (req, res) => {
+  const userId = req.body.id;
+  const updatedTodos = req.body.todos;
+  const user = await User.findOne({ _id: userId });
+  const newTodos = user.todos;
+  newTodos.map((element) => {
+    updatedTodos.forEach((updatedTodo) => {
+      if (element._id == updatedTodo._id) {
+        if (updatedTodo.name !== undefined) {
+          element.name = updatedTodo.name;
+        }
+        if (updatedTodo.isDone !== undefined) {
+          element.isDone = updatedTodo.isDone;
+        }
+        if (updatedTodo.category !== undefined) {
+          element.category = updatedTodo.category;
+        }
+        if (updatedTodo.index !== undefined) {
+          element.index = updatedTodo.index;
+        }
+        if (updatedTodo.subTo !== undefined) {
+          element.subTo = updatedTodo.subTo;
+        }
+      }
+      return element;
+    });
   });
-  const positiveIndex = (newTodosArray.length + index) % newTodosArray.length;
-  //for somereason things break when I pass in a negative index
-  if (formData.todo.name !== undefined) {
-    newTodosArray[positiveIndex].name = formData.todo.name;
-  }
-  if (formData.todo.isDone !== undefined) {
-    newTodosArray[positiveIndex].isDone = formData.todo.isDone;
-  }
-  if (formData.todo.category !== undefined) {
-    newTodosArray[positiveIndex].category = formData.todo.category;
-  }
-  if (formData.todo.index !== undefined) {
-    newTodosArray[positiveIndex].index = formData.todo.index;
-  }
-  if (formData.todo.subTo !== undefined) {
-    newTodosArray[positiveIndex].subTo = formData.todo.subTo;
-  }
-  await User.updateOne({ _id: formData.id }, { todos: newTodosArray });
-  res.json(newTodosArray);
+  await User.updateOne({ _id: userId }, { todos: newTodos });
+  res.json(newTodos);
 };
 
-const deleteTodo = async (req, res) => {
-  const formData = req.body;
-  const user = await User.findOne({ _id: formData.id });
-  const todosArray = user.todos;
-  const index = todosArray.indexOf(
-    todosArray.find((element) => {
-      return element._id.toString() == formData.todo.id;
-    })
-  );
-  const positiveIndex = (todosArray.length + index) % todosArray.length;
-  todosArray.splice(positiveIndex, 1);
-  await User.updateOne({ _id: formData.id }, { todos: todosArray });
-  res.json(todosArray);
+const deleteTodos = async (req, res) => {
+  const userId = req.body.id;
+  const updatedTodos = req.body.todos;
+  const idsArray = updatedTodos.map((element) => element._id);
+  const user = await User.findOne({ _id: userId });
+  let newTodos = user.todos;
+  newTodos = newTodos.filter((element) => {
+    console.log(!idsArray.includes(element._id));
+    return !idsArray.includes(String(element._id));
+  });
+  await User.updateOne({ _id: userId }, { todos: newTodos });
+  res.json(newTodos);
 };
 
-module.exports = { createUser, login, createTodo, updateTodo, deleteTodo };
+module.exports = { createUser, login, createTodo, updateTodos, deleteTodos };
