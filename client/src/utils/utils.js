@@ -70,7 +70,7 @@ const deleteTodos = async (array, userId) => {
       id: userId,
       todos: array.map((element) => {
         return {
-          _id: element.id,
+          _id: element._id,
         };
       }),
     },

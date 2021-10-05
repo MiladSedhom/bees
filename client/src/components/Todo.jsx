@@ -149,7 +149,10 @@ const Todo = ({
             }}
             onClick={(e) => {
               setTodos(todos.filter((element) => element._id != id));
-              deleteTodos([{ id: id }], userData.id);
+              const subTodos = todos.filter((element) => {
+                return element.subTo == id;
+              });
+              deleteTodos([{ _id: id }, ...subTodos], userData.id);
             }}
             className="delete-btn"
           >
