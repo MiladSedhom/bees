@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 import axios from "axios";
+import DropZone from "./DropZone";
 
 const Todo = ({
   todo,
@@ -20,7 +21,6 @@ const Todo = ({
   draggedItemId,
   setDraggedItemId,
   isRecentlyAdded,
-  subTodos,
 }) => {
   const blurElement = (e) => {
     if (e.keyCode === 13 && !e.shiftKey) {
@@ -31,35 +31,14 @@ const Todo = ({
 
   return (
     <>
-      <motion.div
-        className="drop-area"
-        onDragOver={(e) => {
-          e.preventDefault();
-        }}
-        onDragEnter={(e) => {
-          e.target.classList.add("drag-over");
-        }}
-        onDragLeave={(e) => {
-          e.target.classList.remove("drag-over");
-        }}
-        onDrop={(e) => {
-          e.target.classList.remove("drag-over");
-          console.log(todos);
-          setTodos(
-            todos.map((element) => {
-              if (element.index > todo.index) {
-                element.index = element.index + 1;
-                return element;
-              } else if ((element.id = draggedItemId)) {
-                element.index = todo.index;
-                return element;
-              }
-              return element;
-            })
-          );
-          console.log(todos);
-        }}
-      ></motion.div>
+      <DropZone
+        index={todo.index}
+        todo={todo}
+        todos={todos}
+        setTodos={setTodos}
+        draggedItemId={draggedItemId}
+        userId={userData.id}
+      />
       <div
         onDragOver={(e) => {
           e.preventDefault();
@@ -131,7 +110,7 @@ const Todo = ({
             }}
             onClick={async (e) => {
               const updatedTodos = await updateTodos(
-                { isDone: !todo.isDone, id: id },
+                [{ isDone: !todo.isDone, id: id }],
                 userData.id
               );
               setTodos(updatedTodos);

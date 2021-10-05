@@ -33,7 +33,7 @@ const TodosContainer = ({
       ...todos,
       { name: "new task", category: category.toLowerCase() },
     ]);
-    //post request //to be cleanded
+    //post request //to be cleaned
     const res = await axios({
       method: "post",
       url: "http://localhost:5000/api/v1/todos",
@@ -43,7 +43,7 @@ const TodosContainer = ({
         todo: {
           category: category.toLowerCase(),
           name: `new task `,
-          index: Number(String(prefix) + String(counter)),
+          index: String(String(prefix) + String(counter)),
         },
       },
     });
@@ -92,8 +92,9 @@ const TodosContainer = ({
           [
             {
               category: category.toLowerCase(),
-              id: draggedItemId,
+              _id: draggedItemId,
               subTo: null,
+              index: String(prefix) + String(counter),
             },
           ],
           userData.id

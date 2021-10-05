@@ -48,7 +48,7 @@ const updateTodos = async (array, userId) => {
       id: userId,
       todos: array.map((element) => {
         return {
-          _id: element.id,
+          _id: element._id,
           name: element.name,
           isDone: element.isDone,
           category: element.category,
