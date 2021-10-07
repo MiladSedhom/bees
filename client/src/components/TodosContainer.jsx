@@ -27,30 +27,19 @@ const TodosContainer = ({
 }) => {
   const counter =
     todos && todos.filter((element) => element.category == category).length;
+
   const addTodo = async () => {
     //changeing the state so the new task get added immeditaly without waitng the response
     await setTodos([
       ...todos,
-      { name: "new task", category: category.toLowerCase() },
-    ]);
-    //post request //to be cleaned
-    const res = await axios({
-      method: "post",
-      url: "http://localhost:5000/api/v1/todos",
-      headers: {},
-      data: {
-        id: userData.id,
-        todo: {
-          category: category.toLowerCase(),
-          name: `new task `,
-          index: String(String(prefix) + String(counter)),
-        },
+      {
+        name: "new task",
+        category: category.toLowerCase(),
+        index: String(String(prefix) + String(counter)),
+        isRecentlyAdded: true,
+        _id: Math.random(),
       },
-    });
-    const data = res.data;
-    //adding a flag to the last created element
-    data[data.length - 1].isRecentlyAdded = true;
-    setTodos(data);
+    ]);
     //grabing the last added element
     const element = document.querySelector(".recently-added");
     element.focus();

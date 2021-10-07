@@ -5,6 +5,7 @@ import {
   updateSubToInUiOnDrop,
   updateCategoryInUiOnDrop,
   deleteTodos,
+  createTodos,
 } from "../utils/utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faCheck } from "@fortawesome/free-solid-svg-icons";
@@ -57,7 +58,7 @@ const Todo = ({
               [
                 {
                   category: todo.category.toLowerCase(),
-                  id: draggedItemId,
+                  _id: draggedItemId,
                   subTo: id,
                 },
               ],
@@ -74,18 +75,33 @@ const Todo = ({
         <p
           className={isRecentlyAdded && "recently-added"}
           contentEditable
-          onBlur={(e) => {
-            updateTodos(
-              [
-                {
-                  name: e.target.innerHTML.replaceAll("&nbsp;", ` `),
-                  isDone: todo.isDone,
-                  category: todo.category,
-                  id: id,
-                },
-              ],
-              userData.id
-            );
+          onBlur={async (e) => {
+            if (isRecentlyAdded === true) {
+              const recentlyAddedTodos = todos.filter(
+                (element) => element.isRecentlyAdded
+              );
+              updateNameInTodos(
+                id,
+                e.target.innerHTML.replaceAll("&nbsp;", ` `),
+                todos,
+                setTodos
+              );
+              createTodos(recentlyAddedTodos, userData.id, setTodos);
+              // setTodos(newTodos);
+            } else {
+              updateTodos(
+                [
+                  {
+                    name: e.target.innerHTML.replaceAll("&nbsp;", ` `),
+                    isDone: todo.isDone,
+                    category: todo.category,
+                    _id: id,
+                    isRecentlyAdded: isRecentlyAdded,
+                  },
+                ],
+                userData.id
+              );
+            }
             updateNameInTodos(
               id,
               e.target.innerHTML.replaceAll("&nbsp;", ` `),

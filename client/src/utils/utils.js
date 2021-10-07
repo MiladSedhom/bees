@@ -40,6 +40,10 @@ const filterArrayCategory = (array, parentCategory) => {
 };
 
 const updateTodos = async (array, userId) => {
+  // if (array[0].isRecentlyAdded === true) {
+  //   const res = createTodo(array[0], userId);
+  //   return res.data;
+  // }
   const res = await axios({
     method: "patch",
     url: "http://localhost:5000/api/v1/todos",
@@ -124,6 +128,27 @@ const changePrefix = (index, prefix) => {
   return Number(String(prefix) + String(index).slice(1));
 };
 
+const createTodos = async (array, userId, setTodo) => {
+  const res = await axios({
+    method: "post",
+    url: "http://localhost:5000/api/v1/todos",
+    headers: {},
+    data: {
+      id: userId,
+      todos: array.map((element) => {
+        return {
+          name: element.name,
+          isDone: element.isDone,
+          category: element.category,
+          subTo: element.subTo,
+          index: element.index,
+        };
+      }),
+    },
+  });
+  setTodo(res.data);
+};
+
 export {
   loginHandler,
   filterArrayCategory,
@@ -134,4 +159,5 @@ export {
   updateSubToInUiOnDrop,
   sortArrayIndexs,
   changePrefix,
+  createTodos,
 };

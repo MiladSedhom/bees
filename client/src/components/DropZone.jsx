@@ -20,7 +20,6 @@ const DropZone = ({ index, todo, todos, setTodos, draggedItemId, userId }) => {
         e.target.classList.remove("drag-over");
         const updatedTodos = todos.map((element) => {
           if (element._id == draggedItemId) {
-            console.log(todo);
             element.index = index;
             return element;
           } else if (Number(element.index) >= Number(todo.index)) {

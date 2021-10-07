@@ -35,12 +35,16 @@ const login = async (req, res) => {
 };
 
 const createTodo = async (req, res) => {
-  const formData = req.body;
-  formData.dateCreated = new Date().toLocaleString();
-  const user = await User.findOne({ _id: formData.id });
-  const TodosArray = [...user.todos, formData.todo];
-  await User.updateOne({ _id: formData.id }, { todos: TodosArray });
-  const newUser = await User.findOne({ _id: formData.id });
+  const userId = req.body.id;
+  const todos = req.body.todos.map((element) => {
+    element.dateCreated = new Date().toLocaleString();
+    return element;
+  });
+  // console.log(Todos);
+  const user = await User.findOne({ _id: userId });
+  const TodosArray = user.todos.concat(todos);
+  await User.updateOne({ _id: userId }, { todos: TodosArray });
+  const newUser = await User.findOne({ _id: userId });
   res.json(newUser.todos);
 };
 
@@ -82,7 +86,6 @@ const deleteTodos = async (req, res) => {
   const user = await User.findOne({ _id: userId });
   let newTodos = user.todos;
   newTodos = newTodos.filter((element) => {
-    console.log(!idsArray.includes(element._id));
     return !idsArray.includes(String(element._id));
   });
   await User.updateOne({ _id: userId }, { todos: newTodos });
