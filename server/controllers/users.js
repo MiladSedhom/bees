@@ -66,6 +66,8 @@ const updateTodos = async (req, res) => {
           element.category = updatedTodo.category;
         }
         if (updatedTodo.index !== undefined) {
+          console.log("old index:", element.index);
+          console.log("updated index:", updatedTodo.index);
           element.index = updatedTodo.index;
         }
         if (updatedTodo.subTo !== undefined) {

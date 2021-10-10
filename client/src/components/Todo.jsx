@@ -39,6 +39,7 @@ const Todo = ({
         setTodos={setTodos}
         draggedItemId={draggedItemId}
         userId={userData.id}
+        category={todo.category}
       />
       <div
         onDragOver={(e) => {
