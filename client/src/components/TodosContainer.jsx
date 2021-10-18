@@ -68,27 +68,29 @@ const TodosContainer = ({
     );
   };
 
+  const onDropHandler = (e) => {
+    updateCategoryInUiOnDrop(todos, setTodos, category, draggedItemId);
+    updateSubToInUiOnDrop(todos, setTodos, null, draggedItemId);
+    updateTodos(
+      [
+        {
+          category: category.toLowerCase(),
+          _id: draggedItemId,
+          subTo: null,
+          index: String(prefix) + String(counter),
+        },
+      ],
+      userData.id
+    );
+  };
+
   return (
     <div
       className="todos-container"
       onDragOver={(e) => {
         e.preventDefault();
       }}
-      onDrop={(e) => {
-        updateCategoryInUiOnDrop(todos, setTodos, category, draggedItemId);
-        updateSubToInUiOnDrop(todos, setTodos, null, draggedItemId);
-        updateTodos(
-          [
-            {
-              category: category.toLowerCase(),
-              _id: draggedItemId,
-              subTo: null,
-              index: String(prefix) + String(counter),
-            },
-          ],
-          userData.id
-        );
-      }}
+      onDrop={onDropHandler}
     >
       <div className="title-container">
         <h1>{category.charAt(0).toUpperCase() + category.slice(1)}</h1>

@@ -1,17 +1,21 @@
-import { React, useReducer, useState } from "react";
+import { React, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import {
-  faDoorOpen,
+  faSignOutAlt,
   faMoon,
   faCog,
   faSignInAlt,
+  faSun,
 } from "@fortawesome/free-solid-svg-icons";
 import { render } from "@testing-library/react";
 import { motion } from "framer-motion";
 
 const Header = ({ isLoggedIn, name, setIsLoggedIn, setUserData }) => {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
   const darkModeHandler = () => {
+    setIsDarkMode(!isDarkMode);
     document.body.classList.toggle("dark");
   };
   return (
@@ -40,7 +44,7 @@ const Header = ({ isLoggedIn, name, setIsLoggedIn, setUserData }) => {
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.9 }}
           >
-            <FontAwesomeIcon icon={faSignInAlt} />
+            <FontAwesomeIcon icon={faSignOutAlt} />
           </motion.li>
         )}
         <motion.li
@@ -48,7 +52,7 @@ const Header = ({ isLoggedIn, name, setIsLoggedIn, setUserData }) => {
           whileHover={{ scale: 1.2 }}
           whileTap={{ scale: 0.9 }}
         >
-          <FontAwesomeIcon icon={faMoon} />
+          <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon} />
         </motion.li>
         <motion.li whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}>
           <FontAwesomeIcon icon={faCog} />

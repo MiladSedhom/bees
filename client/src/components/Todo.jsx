@@ -10,7 +10,6 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
-import axios from "axios";
 import DropZone from "./DropZone";
 
 const Todo = ({
@@ -30,6 +29,75 @@ const Todo = ({
     }
   };
 
+  const onDropHandler = (e) => {
+    e.stopPropagation();
+    if (draggedItemId != id) {
+      updateCategoryInUiOnDrop(todos, setTodos, todo.category, draggedItemId);
+      updateSubToInUiOnDrop(todos, setTodos, id, draggedItemId);
+      updateTodos(
+        [
+          {
+            category: todo.category.toLowerCase(),
+            _id: draggedItemId,
+            subTo: id,
+          },
+        ],
+        userData.id
+      );
+    }
+  };
+
+  const onBlurHandler = async (e) => {
+    if (isRecentlyAdded === true) {
+      const recentlyAddedTodos = todos.filter(
+        (element) => element.isRecentlyAdded
+      );
+      updateNameInTodos(
+        id,
+        e.target.innerHTML.replaceAll("&nbsp;", ` `),
+        todos,
+        setTodos
+      );
+      createTodos(recentlyAddedTodos, userData.id, setTodos);
+      // setTodos(newTodos);
+    } else {
+      updateTodos(
+        [
+          {
+            name: e.target.innerHTML.replaceAll("&nbsp;", ` `),
+            isDone: todo.isDone,
+            category: todo.category,
+            _id: id,
+            isRecentlyAdded: isRecentlyAdded,
+          },
+        ],
+        userData.id
+      );
+    }
+    updateNameInTodos(
+      id,
+      e.target.innerHTML.replaceAll("&nbsp;", ` `),
+      todos,
+      setTodos
+    );
+  };
+
+  const doneClickHandler = async (e) => {
+    const updatedTodos = await updateTodos(
+      [{ isDone: !todo.isDone, _id: id }],
+      userData.id
+    );
+    setTodos(updatedTodos);
+  };
+
+  const deleteClickHandler = (e) => {
+    setTodos(todos.filter((element) => element._id != id));
+    const subTodos = todos.filter((element) => {
+      return element.subTo == id;
+    });
+    deleteTodos([{ _id: id }, ...subTodos], userData.id);
+  };
+
   return (
     <>
       <DropZone
@@ -45,28 +113,7 @@ const Todo = ({
         onDragOver={(e) => {
           e.preventDefault();
         }}
-        onDrop={(e) => {
-          e.stopPropagation();
-          if (draggedItemId != id) {
-            updateCategoryInUiOnDrop(
-              todos,
-              setTodos,
-              todo.category,
-              draggedItemId
-            );
-            updateSubToInUiOnDrop(todos, setTodos, id, draggedItemId);
-            updateTodos(
-              [
-                {
-                  category: todo.category.toLowerCase(),
-                  _id: draggedItemId,
-                  subTo: id,
-                },
-              ],
-              userData.id
-            );
-          }
-        }}
+        onDrop={onDropHandler}
         className={todo.isDone ? "todo done" : "todo"}
         draggable
         onDragStart={(e) => {
@@ -76,40 +123,7 @@ const Todo = ({
         <p
           className={isRecentlyAdded && "recently-added"}
           contentEditable
-          onBlur={async (e) => {
-            if (isRecentlyAdded === true) {
-              const recentlyAddedTodos = todos.filter(
-                (element) => element.isRecentlyAdded
-              );
-              updateNameInTodos(
-                id,
-                e.target.innerHTML.replaceAll("&nbsp;", ` `),
-                todos,
-                setTodos
-              );
-              createTodos(recentlyAddedTodos, userData.id, setTodos);
-              // setTodos(newTodos);
-            } else {
-              updateTodos(
-                [
-                  {
-                    name: e.target.innerHTML.replaceAll("&nbsp;", ` `),
-                    isDone: todo.isDone,
-                    category: todo.category,
-                    _id: id,
-                    isRecentlyAdded: isRecentlyAdded,
-                  },
-                ],
-                userData.id
-              );
-            }
-            updateNameInTodos(
-              id,
-              e.target.innerHTML.replaceAll("&nbsp;", ` `),
-              todos,
-              setTodos
-            );
-          }}
+          onBlur={onBlurHandler}
           onKeyDown={blurElement}
         >
           {todo.name.replaceAll(
@@ -125,13 +139,7 @@ const Todo = ({
             transition={{
               duration: 0.2,
             }}
-            onClick={async (e) => {
-              const updatedTodos = await updateTodos(
-                [{ isDone: !todo.isDone, id: id }],
-                userData.id
-              );
-              setTodos(updatedTodos);
-            }}
+            onClick={doneClickHandler}
             className="done-btn"
           >
             <FontAwesomeIcon icon={faCheck} />
@@ -143,13 +151,7 @@ const Todo = ({
             transition={{
               duration: 0.2,
             }}
-            onClick={(e) => {
-              setTodos(todos.filter((element) => element._id != id));
-              const subTodos = todos.filter((element) => {
-                return element.subTo == id;
-              });
-              deleteTodos([{ _id: id }, ...subTodos], userData.id);
-            }}
+            onClick={deleteClickHandler}
             className="delete-btn"
           >
             <FontAwesomeIcon icon={faTrashAlt} />
