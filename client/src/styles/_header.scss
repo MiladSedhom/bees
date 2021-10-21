@@ -16,14 +16,13 @@ header {
   :hover {
     cursor: pointer;
   }
-}
-
-ul {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  li {
-    padding: 0.5rem;
+  ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    li {
+      padding: 0.5rem;
+    }
   }
 }

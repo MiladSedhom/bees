@@ -25,3 +25,10 @@ create em all
 maybe actually store the id on that q
 but meh sound like it would take more thinkig and im so sleepy rn
 gonna go the one above
+
+-List array of categories
+container => array.map([list UD].onClick=> setCurrentCatgories or setCurrentList)
+
+list => {name, [catgories], \_id}
+
+category => string

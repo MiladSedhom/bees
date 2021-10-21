@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import TodosContainer from "../components/TodosContainer";
 import { motion } from "framer-motion";
+import Sidebar from "../components/Sidebar";
 
 const HomePage = ({ guestTodos, setGuestTodos, userData, isLoggedIn }) => {
   //states
@@ -48,15 +49,18 @@ const HomePage = ({ guestTodos, setGuestTodos, userData, isLoggedIn }) => {
     return containers;
   };
   return (
-    <main>
-      <motion.section
-        animate={"visible"}
-        initial={"hidden"}
-        variants={sectionVariants}
-      >
-        {renderTodoContainers(categories)}
-      </motion.section>
-    </main>
+    <div className="home-page">
+      <Sidebar userName="Winter" />
+      <main>
+        <motion.section
+          animate={"visible"}
+          initial={"hidden"}
+          variants={sectionVariants}
+        >
+          {renderTodoContainers(categories)}
+        </motion.section>
+      </main>
+    </div>
   );
 };
 
