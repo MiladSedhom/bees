@@ -40,58 +40,36 @@ const createTodo = async (req, res) => {
     element.dateCreated = new Date().toLocaleString();
     return element;
   });
-  // console.log(Todos);
   const user = await User.findOne({ _id: userId });
-  const TodosArray = user.todos.concat(todos);
-  await User.updateOne({ _id: userId }, { todos: TodosArray });
-  const newUser = await User.findOne({ _id: userId });
-  res.json(newUser.todos);
+  user.todos.push(...todos);
+  user.save();
+  console.log(user.todos);
+  res.json(user.todos);
 };
 
 const updateTodos = async (req, res) => {
   const userId = req.body.id;
   const updatedTodos = req.body.todos;
   const user = await User.findOne({ _id: userId });
-  const newTodos = user.todos;
-  newTodos.map((element) => {
-    updatedTodos.forEach((updatedTodo) => {
-      if (element._id == updatedTodo._id) {
-        if (updatedTodo.name !== undefined) {
-          element.name = updatedTodo.name;
-        }
-        if (updatedTodo.isDone !== undefined) {
-          element.isDone = updatedTodo.isDone;
-        }
-        if (updatedTodo.category !== undefined) {
-          element.category = updatedTodo.category;
-        }
-        if (updatedTodo.index !== undefined) {
-          console.log("old index:", element.index);
-          console.log("updated index:", updatedTodo.index);
-          element.index = updatedTodo.index;
-        }
-        if (updatedTodo.subTo !== undefined) {
-          element.subTo = updatedTodo.subTo;
-        }
-      }
-      return element;
-    });
+  updatedTodos.forEach((updatedTodo) => {
+    const todo = user.todos.id(updatedTodo._id);
+    for (key in updatedTodo) {
+      todo[key] = updatedTodo[key];
+    }
   });
-  await User.updateOne({ _id: userId }, { todos: newTodos });
-  res.json(newTodos);
+  user.save();
+  res.json(user.Todos);
 };
 
 const deleteTodos = async (req, res) => {
   const userId = req.body.id;
   const updatedTodos = req.body.todos;
-  const idsArray = updatedTodos.map((element) => element._id);
   const user = await User.findOne({ _id: userId });
-  let newTodos = user.todos;
-  newTodos = newTodos.filter((element) => {
-    return !idsArray.includes(String(element._id));
+  updatedTodos.forEach((updatedTodo) => {
+    user.todos.id(updatedTodo._id).remove();
   });
-  await User.updateOne({ _id: userId }, { todos: newTodos });
-  res.json(newTodos);
+  user.save();
+  res.json(user.todos);
 };
 
 module.exports = { createUser, login, createTodo, updateTodos, deleteTodos };
