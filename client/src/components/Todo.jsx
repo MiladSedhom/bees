@@ -87,7 +87,16 @@ const Todo = ({
       [{ isDone: !todo.isDone, _id: id }],
       userData.id
     );
-    setTodos(updatedTodos);
+    setTodos(
+      todos.map((element) => {
+        if (element._id == id) {
+          element.isDone = !element.isDone;
+          return element;
+        } else {
+          return element;
+        }
+      })
+    );
   };
 
   const deleteClickHandler = (e) => {

@@ -11,9 +11,10 @@ import {
 import { render } from "@testing-library/react";
 import { motion } from "framer-motion";
 
+//this is temproray til i think about it, cuz light mode suck the life outta my eyes
+document.body.classList.add("dark");
 const Header = ({ isLoggedIn, name, setIsLoggedIn, setUserData }) => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const darkModeHandler = () => {
     setIsDarkMode(!isDarkMode);
     document.body.classList.toggle("dark");
