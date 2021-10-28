@@ -1,0 +1,12 @@
+.list {
+  height: 2rem;
+  background-color: $background;
+  border-radius: 20px;
+  display: flex;
+  margin: 0 0 0.5rem 0;
+  @include dfcc;
+  padding: 0 10px;
+  p {
+    flex: 30%;
+  }
+}

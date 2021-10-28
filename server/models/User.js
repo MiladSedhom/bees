@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const { todoSchema } = require("./Todo");
+const { categorySchema } = require("./Category");
+const { listSchema } = require("./List");
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -11,8 +13,9 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true },
   password: { type: String, required: true },
   dateCreated: { type: Date },
+  lists: [listSchema],
+  categories: [categorySchema],
   todos: [todoSchema],
-  categories: [String],
 });
 
 const User = mongoose.model("User", UserSchema);

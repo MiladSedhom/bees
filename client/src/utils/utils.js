@@ -40,10 +40,6 @@ const filterArrayCategory = (array, parentCategory) => {
 };
 
 const updateTodos = async (array, userId) => {
-  // if (array[0].isRecentlyAdded === true) {
-  //   const res = createTodo(array[0], userId);
-  //   return res.data;
-  // }
   const res = await axios({
     method: "patch",
     url: "http://localhost:5000/api/v1/todos",

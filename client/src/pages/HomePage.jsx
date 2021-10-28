@@ -50,7 +50,7 @@ const HomePage = ({ guestTodos, setGuestTodos, userData, isLoggedIn }) => {
   };
   return (
     <div className="home-page">
-      <Sidebar userName="Winter" />
+      <Sidebar userData={userData} />
       <main>
         <motion.section
           animate={"visible"}

@@ -29,6 +29,13 @@ gonna go the one above
 -List array of categories
 container => array.map([list UD].onClick=> setCurrentCatgories or setCurrentList)
 
-list => {name, [catgories], \_id}
+user{name, id, email, password,
+list => {name, id},
+category => {name,id,listId},
+Todos => {name, id, isDone, subTo, categoryId,},
+}
 
-category => string
+//tokens belmara w ana fe el backend
+
+lists C R U D
+Cats C R U D

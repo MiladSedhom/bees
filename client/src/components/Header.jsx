@@ -1,4 +1,5 @@
-import { React, useState } from "react";
+import { React, useState, useContext } from "react";
+import { LoggedInContext } from "../LoggedInContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import {
@@ -8,12 +9,12 @@ import {
   faSignInAlt,
   faSun,
 } from "@fortawesome/free-solid-svg-icons";
-import { render } from "@testing-library/react";
 import { motion } from "framer-motion";
 
 //this is temproray til i think about it, cuz light mode suck the life outta my eyes
 document.body.classList.add("dark");
-const Header = ({ isLoggedIn, name, setIsLoggedIn, setUserData }) => {
+const Header = ({ name, setUserData }) => {
+  const { isLoggedIn, setIsLoggedIn } = useContext(LoggedInContext);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const darkModeHandler = () => {
     setIsDarkMode(!isDarkMode);
